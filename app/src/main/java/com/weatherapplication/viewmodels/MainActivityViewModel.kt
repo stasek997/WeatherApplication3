@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    val repository: WeatherRepository
+    private val repository: WeatherRepository
 ) : ViewModel() {
 
     val cityListLiveData = MutableLiveData<MutableList<City>>()
@@ -38,38 +38,42 @@ class MainActivityViewModel @Inject constructor(
             }
         })
     }
-    fun getWeatherInfo(cityId: Int){
+
+    fun getWeatherInfo(cityId: Int) {
 
 
         progressBarLiveData.postValue(true)
 
-        repository.getWeatherInfo(cityId, object :
-            RequestCompleteListener<WeatherModelDTO> {
-            override fun onRequestSuccess(data: WeatherModelDTO) {
+        repository.getWeatherInfo(
+            cityId,
+            object : RequestCompleteListener<WeatherModelDTO> {
+                override fun onRequestSuccess(data: WeatherModelDTO) {
 
-                // business logic and data manipulation tasks should be done here
-                val weatherData = WeatherData(
-                    dateTime = data.dt.unixTimestampToDateTimeString(),
-                    temperature = data.main.temp.kelvinToCelsius().toString(),
-                    cityAndCountry = "${data.name}, ${data.sys.country}",
-                    weatherConditionIconUrl = "http://openweathermap.org/img/w/${data.weather[0].icon}.png",
-                    weatherConditionIconDescription = data.weather[0].description,
-                    humidity = "${data.main.humidity}%",
-                    pressure = "${data.main.pressure} mBar",
-                    visibility = "${data.visibility/1000.0} KM",
-                    sunrise = data.sys.sunrise.unixTimestampToTimeString(),
-                    sunset = data.sys.sunset.unixTimestampToTimeString()
-                )
+                    // business logic and data manipulation tasks should be done here
+                    val weatherData = WeatherData(
+                        dateTime = data.dt.unixTimestampToDateTimeString(),
+                        temperature = data.main.temp.kelvinToCelsius().toString(),
+                        cityAndCountry = "${data.name}, ${data.sys.country}",
+                        weatherConditionIconUrl = "http://openweathermap.org/img/w/${data.weather[0].icon}.png",
+                        weatherConditionIconDescription = data.weather[0].description,
+                        humidity = "${data.main.humidity}%",
+                        pressure = "${data.main.pressure} mBar",
+                        visibility = "${data.visibility / 1000.0} KM",
+                        sunrise = data.sys.sunrise.unixTimestampToTimeString(),
+                        sunset = data.sys.sunset.unixTimestampToTimeString()
+                    )
 
-                progressBarLiveData.postValue(false) // PUSH data to LiveData object to hide progress bar
+                    progressBarLiveData.postValue(false) // PUSH data to LiveData object to hide progress bar
 
-                // After applying business logic and data manipulation, we push data to show on UI
-                weatherInfoLiveData.postValue(weatherData) // PUSH data to LiveData object
+                    // After applying business logic and data manipulation, we push data to show on UI
+                    weatherInfoLiveData.postValue(weatherData) // PUSH data to LiveData object
+                }
+
+                override fun onRequestFailed(errorMessage: String) {
+                    progressBarLiveData.postValue(false) // hide progress bar
+                    weatherInfoFailureLiveData.postValue(errorMessage) // PUSH error message to LiveData object
+                }
             }
-
-            override fun onRequestFailed(errorMessage: String) {
-                progressBarLiveData.postValue(false) // hide progress bar
-                weatherInfoFailureLiveData.postValue(errorMessage) // PUSH error message to LiveData object
-            }
-        })
-    } }
+        )
+    }
+}

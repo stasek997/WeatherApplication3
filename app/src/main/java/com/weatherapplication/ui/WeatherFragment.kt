@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -28,6 +30,11 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WeatherFragment () : Fragment() {
 
+    companion object {
+        const val KEY_CITY_ID = "key_city_id"
+        const val KEY_BUNDLE_ID = "key_bundle_id"
+    }
+
     private var _binding: WeatherFragmentBinding? = null
     private val binding get() = _binding!!
 
@@ -39,16 +46,29 @@ class WeatherFragment () : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = WeatherFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
 
+    fun setListen() {
+        parentFragmentManager.setFragmentResultListener(
+            KEY_CITY_ID, this
+        ) { _, _ ->
+
+        }
+        setFragmentResult(
+            KEY_CITY_ID,
+            bundleOf(
+                KEY_BUNDLE_ID to cityId
+            )
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
+        setListen()
         binding.settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_mainScreenFragment_to_settingsScreenFragment)
         }
