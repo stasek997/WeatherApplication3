@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accept">Принять</string>
+    <string name="change_theme">Смена темы</string>
+    <string name="app_name">Прогноз погоды</string>
+    <string name="view_weather">Просмотр погоды</string>
+    <string name="label_humidity">Влажность</string>
+    <string name="label_pressure">Давление</string>
+    <string name="label_visibility">Видимость</string>
+    <string name="label_sunrise">Восход</string>
+    <string name="label_sunset">Заход</string>
+    <string name="error_message">Ошибка загрузки</string>
+</resources>

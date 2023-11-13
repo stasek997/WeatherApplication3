@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Base.Widget.AppCompat.ConstraintLayout3"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context="com.weatherapplication.ui.AddScreenFragment">
+
+
+    <Spinner
+        android:id="@+id/spinner"
+        style="@style/Base.Widget.AppCompat.Spinner."
+        android:layout_width="253dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_view_weather"
+        style="@style/Widget.MaterialComponents.Button.MyButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/buttons"
+        android:text="@string/view_weather"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/AcceptButton"
+        style="@style/Widget.MaterialComponents.Button.MyButtonStyle"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/accept"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/ChangeTheme"
+        android:layout_width="323dp"
+        android:layout_height="58dp"
+        android:checked="true"
+        android:minHeight="48dp"
+        android:text="@string/change_theme"
+        android:theme="@style/Switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.29"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

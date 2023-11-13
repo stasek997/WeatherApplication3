@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weather_main_graph"
+    app:startDestination="@id/mainScreenFragment">
+
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.weatherapplication.ui.WeatherFragment"
+        android:label="fragment_main_screen"
+        tools:layout="@layout/weather_fragment" >
+        <action
+            android:id="@+id/action_mainScreenFragment_to_settingsScreenFragment"
+            app:destination="@id/settingsScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsScreenFragment"
+        android:name="com.weatherapplication.ui.AddScreenFragment"
+        android:label="SettingsScreenFragment" >
+        <action
+            android:id="@+id/action_settingsScreenFragment_to_mainScreenFragment"
+            app:destination="@id/mainScreenFragment" />
+
+    </fragment>
+</navigation>
