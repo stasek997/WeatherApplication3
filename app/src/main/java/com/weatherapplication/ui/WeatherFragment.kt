@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -28,13 +30,17 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WeatherFragment () : Fragment() {
 
+
     private var _binding: WeatherFragmentBinding? = null
     private val binding get() = _binding!!
 
 
     private val viewModel by viewModels<MainActivityViewModel>()
 
-
+    companion object {
+        const val KEY_CITY_ID = "key_city_id"
+        const val KEY_BUNDLE_ID = "key_bundle_id"
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +59,7 @@ class WeatherFragment () : Fragment() {
             findNavController().navigate(R.id.action_mainScreenFragment_to_settingsScreenFragment)
         }
         setLiveDataListeners()
+      //  setListen()
         //setupViews()
     }
 
@@ -104,7 +111,15 @@ class WeatherFragment () : Fragment() {
             binding.tvErrorMessage.text = errorMessage
         })
     }
-
+//    private fun setListen() {
+//        parentFragmentManager.setFragmentResultListener(
+//            KEY_CITY_ID, this
+//        ) { _, bundle ->
+//          viewModel.getWeatherInfo(
+//             bundle.getInt(KEY_BUNDLE_ID)
+//          )
+//        }
+//    }
 
     private fun setWeatherInfo(weatherData: WeatherData) {
         with(binding) {
