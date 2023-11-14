@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -16,6 +18,7 @@ import com.example.weatherapplication.databinding.AddScreenFragmentBinding
 
 import com.hellohasan.weatherappmvvm.utils.convertToListOfCityName
 import com.weatherapplication.data.City
+import com.weatherapplication.viewmodels.AddScreenViewModel
 import com.weatherapplication.viewmodels.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,7 +33,7 @@ class AddScreenFragment : Fragment(){
     private var cityList: MutableList<City> = mutableListOf()
 
 
-    private val viewModel by viewModels<MainActivityViewModel>()
+    private val viewModel by viewModels<AddScreenViewModel>()
 
 
     override fun onCreateView(
@@ -84,7 +87,11 @@ class AddScreenFragment : Fragment(){
         // View Weather button click listener
         binding.btnViewWeather.setOnClickListener {
             val selectedCityId = cityList[binding.spinner.selectedItemPosition].id
-            viewModel.getWeatherInfo(selectedCityId) // fetch weather info
+            setFragmentResult(
+                WeatherFragment.KEY_CITY_ID,
+                bundleOf(
+                    WeatherFragment.KEY_BUNDLE_ID to selectedCityId
+                )) // fetch weather info
         }
     }
 
