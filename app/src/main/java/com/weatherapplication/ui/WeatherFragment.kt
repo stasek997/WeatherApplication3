@@ -58,11 +58,11 @@ class WeatherFragment () : Fragment() {
         ) { _, _ ->
 
         }
-        setFragmentResult(
-            KEY_CITY_ID,
-            bundleOf(
-                KEY_BUNDLE_ID to cityId
-            )
+//        setFragmentResult(
+//            KEY_CITY_ID,
+//            bundleOf(
+//                KEY_BUNDLE_ID to cityId
+//            )
     }
 
 

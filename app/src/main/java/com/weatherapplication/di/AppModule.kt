@@ -1,7 +1,8 @@
-package com.weatherapplication.network
+package com.weatherapplication.di
 
 import android.content.Context
 import com.weatherapplication.WeatherApp
+import com.weatherapplication.network.WeatherApiInterface
 import com.weatherapplication.repository.WeatherRepository
 import com.weatherapplication.repository.WeatherRepositoryImpl
 import dagger.Module
@@ -9,16 +10,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
-@Module
 @InstallIn(SingletonComponent::class)
+@Module
 object AppModule {
     @Provides
-
     fun provideBaseUrl(): String = "https://api.openweathermap.org/data/2.5/"
 
     @Provides
@@ -38,8 +37,12 @@ object AppModule {
     }
 
    @Provides
-  fun provideWeatherRepository(context: WeatherApp, apiInterface: WeatherApiInterface): WeatherRepository {
-        return WeatherRepositoryImpl(context, apiInterface)
+  fun provideWeatherRepository(
+       context: WeatherApp, apiInterface: WeatherApiInterface
+  ): WeatherRepository {
+        return WeatherRepositoryImpl(
+            context, apiInterface
+        )
     }
 
     @Singleton

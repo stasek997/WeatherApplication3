@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    private val repository: WeatherRepository
+    private val repository: WeatherRepository,
 ) : ViewModel() {
 
     val cityListLiveData = MutableLiveData<MutableList<City>>()
@@ -40,8 +40,6 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun getWeatherInfo(cityId: Int) {
-
-
         progressBarLiveData.postValue(true)
 
         repository.getWeatherInfo(

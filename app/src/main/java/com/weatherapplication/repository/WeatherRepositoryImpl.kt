@@ -13,7 +13,10 @@ import retrofit2.Response
 import java.io.IOException
 
 
-class WeatherRepositoryImpl constructor (private val context: WeatherApp, private val apiInterface: WeatherApiInterface): WeatherRepository{
+class WeatherRepositoryImpl constructor (
+    private val context: WeatherApp,
+    private val apiInterface: WeatherApiInterface
+): WeatherRepository {
 
     override fun getCityList(callback: RequestCompleteListener<MutableList<City>>) {
         try {
