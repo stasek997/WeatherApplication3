@@ -1,6 +1,6 @@
 package com.weatherapplication.repository
 
-interface RequestCompleteListener<T> {
-    fun onRequestSuccess(data: T)
-    fun onRequestFailed(errorMessage: String)
-}
+//interface RequestCompleteListener<T> {
+  //  fun onRequestSuccess(data: T)
+    //fun onRequestFailed(errorMessage: String)
+//}

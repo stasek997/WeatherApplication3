@@ -2,38 +2,55 @@ package com.weatherapplication.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.hellohasan.weatherappmvvm.utils.kelvinToCelsius
-import com.hellohasan.weatherappmvvm.utils.unixTimestampToDateTimeString
-import com.hellohasan.weatherappmvvm.utils.unixTimestampToTimeString
+import androidx.lifecycle.viewModelScope
 import com.weatherapplication.data.City
-import com.weatherapplication.data.WeatherData
-import com.weatherapplication.data.WeatherModelDTO
-import com.weatherapplication.repository.RequestCompleteListener
+import com.weatherapplication.repository.WeatherPref
 import com.weatherapplication.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddScreenViewModel @Inject constructor(
-    val repository: WeatherRepository
+    val repository: WeatherRepository,
+    private val prefs: WeatherPref
 ) : ViewModel() {
 
     val cityListLiveData = MutableLiveData<MutableList<City>>()
     val cityListFailureLiveData = MutableLiveData<String>()
 
 
-    fun getCityList() {
-        repository.getCityList(object : RequestCompleteListener<MutableList<City>> {
-            override fun onRequestSuccess(data: MutableList<City>) {
-                cityListLiveData.postValue(data) // PUSH data to LiveData object
-            }
+    fun getCityList() = viewModelScope.launch {
 
-            override fun onRequestFailed(errorMessage: String) {
-                cityListFailureLiveData.postValue(errorMessage)
-                // PUSH error message to LiveData object
-            }
-        })
+        try {
+
+            val data = repository.getCityList()
+            cityListLiveData.postValue(data)
+        }
+
+        catch (e:Exception) {
+            val errorMessage = e.localizedMessage.orEmpty()
+            cityListFailureLiveData.postValue(errorMessage)
+        }
+
+        catch (e: CancellationException){
+            val errorMessage = e.localizedMessage.orEmpty()
+            cityListFailureLiveData.postValue(errorMessage)
+        }
     }
 
+
+    var cityId: City?
+        get () = prefs.city
+        set(value) {
+            prefs.city = value
+        }
+
+    var dayNightMode: Int
+        get () = prefs.dayNightMode
+        set(value) {
+            prefs.dayNightMode = value
+        }
 
 }

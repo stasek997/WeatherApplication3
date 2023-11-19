@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
 
 import androidx.fragment.app.Fragment
@@ -52,18 +53,7 @@ class WeatherFragment () : Fragment() {
     }
 
 
-    fun setListen() {
-        parentFragmentManager.setFragmentResultListener(
-            KEY_CITY_ID, this
-        ) { _, _ ->
 
-        }
-//        setFragmentResult(
-//            KEY_CITY_ID,
-//            bundleOf(
-//                KEY_BUNDLE_ID to cityId
-//            )
-    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,23 +63,26 @@ class WeatherFragment () : Fragment() {
             findNavController().navigate(R.id.action_mainScreenFragment_to_settingsScreenFragment)
         }
         setLiveDataListeners()
-        //setupViews()
+        setCash()
+
     }
 
-    //private fun setupViews() {
-    //  binding.weatherRecyclerView.layoutManager
-    //}
+    private fun setCash() {
+        AppCompatDelegate.setDefaultNightMode(viewModel.dayNightMode)
+    }
 
+    private fun setListen() {
+        parentFragmentManager.setFragmentResultListener(
+            KEY_CITY_ID, this
+        ) { _, bundle ->
+           viewModel.getWeatherInfo(bundle.getInt(KEY_BUNDLE_ID))
+        }
+
+    }
 
     private fun setLiveDataListeners() {
 
 
-        /**
-         * ProgressBar visibility will be handled by this LiveData. ViewModel decides when Activity
-         * should show ProgressBar and when hide.
-         *
-         * Here I've used lambda expression to implement Observer interface in second parameter.
-         */
         viewModel.progressBarLiveData.observe(viewLifecycleOwner, Observer { isShowLoader ->
             if (isShowLoader)
                 binding.weatherProgressBar.visibility = View.VISIBLE
@@ -97,27 +90,12 @@ class WeatherFragment () : Fragment() {
                 binding.weatherProgressBar.visibility = View.GONE
         })
 
-        /**
-         * This method will be triggered when ViewModel successfully receive WeatherData from our
-         * data source (I mean Model). Activity just observing (subscribing) this LiveData for showing
-         * weather information on UI. ViewModel receives Weather data API response from Model via
-         * Callback method of Model. Then ViewModel apply some business logic and manipulate data.
-         * Finally ViewModel PUSH WeatherData to `weatherInfoLiveData`. After PUSHING into it, below
-         * method triggered instantly! Then we set the data on UI.
-         *
-         * Here I've used lambda expression to implement Observer interface in second parameter.
-         */
+
         viewModel.weatherInfoLiveData.observe(viewLifecycleOwner, Observer { weatherData ->
             setWeatherInfo(weatherData)
         })
 
-        /**
-         * If ViewModel faces any error during Weather Info fetching API call by Model, then PUSH the
-         * error message into `weatherInfoFailureLiveData`. After that, this method will be triggered.
-         * Then we will hide the output view and show error message on UI.
-         *
-         * Here I've used lambda expression to implement Observer interface in second parameter.
-         */
+
         viewModel.weatherInfoFailureLiveData.observe(viewLifecycleOwner, Observer { errorMessage ->
             binding.outputGroup.visibility = View.GONE
             binding.tvErrorMessage.visibility = View.VISIBLE
